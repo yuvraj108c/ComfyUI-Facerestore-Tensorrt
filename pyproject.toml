@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-facerestore-tensorrt"
+description = "This project provides an experimental Tensorrt implementation for ultra fast face restoration inside ComfyUI.\nNote: This project doesn't do pre/post processing. It only works on cropped faces for now."
+version = "1.0.0"
+license = {file = "LICENSE"}
+dependencies = ["tensorrt==10.4.0", "polygraphy", "colored"]
+
+[project.urls]
+Repository = "https://github.com/yuvraj108c/ComfyUI-Facerestore-Tensorrt"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-Facerestore-Tensorrt"
+Icon = ""
