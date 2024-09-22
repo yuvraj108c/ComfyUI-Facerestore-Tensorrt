@@ -85,11 +85,13 @@ class FaceRestoreTensorrt:
 
     def main(self, images, engine):
 
-        # setup tensorrt engine
-        engine = Engine(os.path.join(ENGINE_DIR,engine))
-        engine.load()
-        engine.activate()
-        engine.allocate_buffers()
+       # setup tensorrt engine
+        if (not hasattr(self, 'engine') or self.engine_label != engine):
+            self.engine = Engine(os.path.join(ENGINE_DIR,engine))
+            self.engine.load()
+            self.engine.activate()
+            self.engine.allocate_buffers()
+            self.engine_label = engine
 
         cudaStream = torch.cuda.current_stream().cuda_stream
         pbar = ProgressBar(images.shape[0])
@@ -101,7 +103,7 @@ class FaceRestoreTensorrt:
 
         for img in images_list:
             normalize(img, (0.5, 0.5, 0.5), (0.5, 0.5, 0.5), inplace=True)
-            result = engine.infer({"input": img},cudaStream)
+            result = self.engine.infer({"input": img},cudaStream)
             output = result['output']
 
             output = tensor2img(output, rgb2bgr=True, min_max=(-1, 1))
